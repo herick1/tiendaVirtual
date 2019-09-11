@@ -11,9 +11,17 @@ class PagesController extends Controller
 {
 	protected $request;
 
+	//aqui en el constructur agregaos tanto el request como el 
+	//middleware para poder acceder a la rutas que no sean de tipo get
 	public function __construct(Request $requests)
 	{
 			$this->request = $requests;
+			// esto se aplica para todas as url 
+			//$this->middleware('TokenAuthenticated'); pero para 
+			//ponerlo a solo uuna se hace de la siguient forma
+			$this->middleware('TokenAuthenticated', ['only'=> ['contacto']]);
+			//tambien esta la version opuesta al unico sino , que se aplican a todos excepto tan url y se hace : 
+			//$this->middleware('TokenAuthenticated', ['except'=> ['contacto']]);
 	}
     /*
 	| primero se crea una direcciones que rediriguen a la pagina de contactos 

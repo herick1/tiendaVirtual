@@ -57,9 +57,14 @@ class Kernel extends HttpKernel
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+
+        //donde se definien milddleware a rutas y controladores vamos a poner aqui a la ruta de contacto
+        'TokenAuthenticated' => \App\Http\Middleware\TokenAuthenticated::class,
+
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+
     ];
 
     /**

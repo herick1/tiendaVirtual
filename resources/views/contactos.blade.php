@@ -142,8 +142,13 @@ table {
 			<h2>Formulario <span>Registro</span></h2>
 		</div>		
 		<form class="form__reg" method="POST" action="contacto">
-			<input class="input" name="nombre" type="text" placeholder="&#128100;  Nombre" required autofocus>
+			<!-- esto dell token es para poder pasar por los middelware ya que en caso contraio daria la execpcion
+				ya que no es un token valido y no podrias pasar al siguiente request , hay dos formas de hacerlo :
+            1)<input name="_token" type="hidden" value= "{{ csrf_token() }}" 
+            2) --> 
+            {!!csrf_field()!!}
 
+			<input class="input" name="nombre" type="text" placeholder="&#128100;  Nombre" required autofocus>
             <input class="input" name="email" type="email" placeholder="&#9993;  Email" required>
             <input class="input" name="telefono" type="text" placeholder="&#128222;  Telefono" required>
             <input class="input" name="direccion" type="text" placeholder="&#8962;  Dirección" required>
