@@ -76,9 +76,18 @@
 				<a class="{{ request() ->is('/')? 'active' :'' }}" href= "{{ route('home') }}">Inicio</a>
 
 				<!--  el simbolo de * es para que no importe lo que este alli igul lo toma como cierto -->
-				<a class="{{ request() ->is('servicios/*')? 'active' :'' }}" href= "{{ route('servicios', 'herick') }}">       Servicios</a>
-				<a class="{{ request() ->is('proyectos/*')? 'active' :'' }}" href="{{ route('proyectos', '') }}">Proyectos</a>
+				<a class="{{ request() ->is('servicios*')? 'active' :'' }}" href= "{{ route('servicios', 'herick') }}">       Servicios</a>
+				<a class="{{ request() ->is('proyectos*')? 'active' :'' }}" href="{{ route('proyectos', '') }}">Proyectos</a>
 				<a class="{{ request() ->is('contactanos')? 'active' :'' }}" href="{{ route('contactos') }}">Contacto</a>
+				@if(auth()->check()) <!--esto es para checkear que un usuario se haya autenticado -->
+					<a class="{{ request() ->is('mensajes')? 'active' :'' }}" href="{{ route('mensajes.index') }}">mensajes</a>
+					<a href="/logout">cerrar sesion de {{auth()->user()->name}}</a>
+				@endif
+				@if(auth()->guest()) <!--esto es para caundo sea un invitado  aparezca para hacer login -->
+					<a class="{{ request() ->is('login')? 'active' :'' }}" href="/login">Login</a>
+				@endif
+
+
 			</nav>
 		</div>
 	</header>

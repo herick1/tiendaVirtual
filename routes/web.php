@@ -34,3 +34,25 @@ Route::get('servicios/{nombre?}', ['as' => 'servicios', 'uses'=> 'PagesControlle
 
 Route::get('proyectos/{nombre?}', ['as' => 'proyectos', 'uses'=> 'PagesController@proyectos'])->where('nombre' , "[A-Za-z]+");
 
+
+Route::resource('mensajes', 'MessagesController');
+
+
+//inicio de sesion en laravel
+Route::get('login', 'Auth\LoginController@showLoginForm');
+
+Route::post('login','Auth\LoginController@login');
+
+//para finalizar la cesion 
+Route::get('logout', 'Auth\LoginController@logout');
+
+
+//cambiar y hacer vista para registrar usuario
+Route::get('test', function(){
+	$user = new App\User;
+	$user->name ='herikc';
+	$user->email ='herikc@gmail.com';
+	$user->password = bcrypt('herikc');
+	$user->save();
+	return $user;
+});
