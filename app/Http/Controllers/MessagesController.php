@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Illuminate\Http\Request;
 
 class MessagesController extends Controller
@@ -10,7 +11,7 @@ class MessagesController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth',['except'=> ['create','store', 'index']]);
+        $this->middleware('auth',['except'=> ['create','store', 'index', 'show', 'edit','update', 'destroy']]);
     }
 
     /**
@@ -20,8 +21,10 @@ class MessagesController extends Controller
      */
     public function index()
     {
-        //
-        return view('welcome');
+        //funcion para trar todos los mensajes
+        $messages = DB::table('mensajes')->get();
+
+        return view('mensajes.index' , compact('messages'));
     }
 
     /**
@@ -31,7 +34,7 @@ class MessagesController extends Controller
      */
     public function create()
     {
-        return view('welcome');
+        return view('mensajes.create');
     }
 
     /**
@@ -42,7 +45,18 @@ class MessagesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        Model::unguard();
+        //metodo post
+        $mensaje= $request->input('mensaje');       
+        DB::select('CALL sp_insert_mensajes(:p0, :p1, :p2)',
+                array(
+                    'p0' =>  $request->input('nombre'),
+                    'p1' =>  $request->input('email'),
+                    'p2' =>  $request->input('mensaje'),
+                ));
+        $messages = DB::table('mensajes')->get();
+        return view('mensajes.index' , compact('messages'));
     }
 
     /**
@@ -53,7 +67,9 @@ class MessagesController extends Controller
      */
     public function show($id)
     {
-              return view('welcome');
+        //es un select de una id 
+        $message = DB::table('mensajes')->where('id',$id)->first();
+        return view('mensajes.show', compact('message'));
     }
 
     /**
@@ -64,7 +80,9 @@ class MessagesController extends Controller
      */
     public function edit($id)
     {
-        //
+        //presentar formulario para actualizar mensaje
+        $message = DB::table('mensajes')->where('id',$id)->first();
+        return view('mensajes.edit', compact('message'));
     }
 
     /**
@@ -76,7 +94,14 @@ class MessagesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $mensaje= $request->input('mensaje');
+        DB::select('CALL sp_update_mensajes(:p0, :p1)',
+                array(
+                    'p0' => $id,
+                    'p1' => $mensaje
+                ));
+        $messages = DB::table('mensajes')->get();
+        return view('mensajes.index' , compact('messages'));
     }
 
     /**
@@ -87,6 +112,11 @@ class MessagesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::select('CALL sp_delete_mensajes(:p0)',
+                array(
+                    'p0' => $id
+                ));
+        $messages = DB::table('mensajes')->get();
+        return view('mensajes.index' , compact('messages'));
     }
 }
